@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Librarian</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link href="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="css/librarian.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/bootstrap-table.min.js"></script>
+    <script src="scripts/librarian.js"></script>
+  </head>
+
+  <script>
+    Dropzone.options.myDropzone = {
+    // Prevents Dropzone from uploading dropped files immediately
+      autoProcessQueue: false,
+      uploadMultiple: false,
+      init: function() {
+        myDropzone = this; // closure
+        this.element.querySelector("button[type=submit]").addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            myDropzone.processQueue();
+          });
+
+          this.on("queuecomplete", function (file) {
+              location.replace("/");
+          });
+      }
+    };
+
+
+  </script>
+  <header>
+    <div class="top-area">
+      <h2 id="logo">
+        <img src="img/book.png"/>
+        <a href="/">Librarian</a>
+      </h2>
+    </div>
+  </header>
+  <body>
+    <div class="upload-zone mb-5">
+      <h1>Drop your books's tarball here!</h1>
+      <form action="/uploads" class="dropzone" id="my-dropzone" method="POST">
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="form-group">
+          <label for="BookName">Book Name</label>
+          <input type="text" name="BookName" id="BookName" placeholder="Enter the book name" class="form-control" required />
+        </div>
+        <div class="form-group">
+          <label for="Author">Author</label>
+          <input type="text" name="Author" id="Author" placeholder="Enter the author" class="form-control" required />
+        </div>
+      </form>
+    </div>
+    <hr style="width: 90%;">
+    <div class="d-flex justify-content-center m-5 card">
+      <div class="text-center">
+         <h4 class="card-title mt-3">Books</h4>
+      </div>
+      <div class="card-body">
+        <table
+          id="table"
+          data-toggle="table"
+          data-search="true">
+          <thead>
+            <tr>
+              <th>Book Name</th>
+              <th>Author</th>
+              <th>Create Date</th>
+              <th>Operation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for book in books %}
+            <tr>
+              <td><a href="/book/{{ book['folder-name'] }}/index.html">{{ book['name'] }}</a></td>
+              <td>{{ book['author'] }}</td>
+              <td>{{ book['create-date'] }}</td>
+              <td>
+                <div class="delete align-middle">
+                  <a href="/delete?id={{ book['id'] }}"><i class="fa-solid fa-trash-can"></i></a>
+                </div>
+              </td>
+            </tr>
+            {% endfor%}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
