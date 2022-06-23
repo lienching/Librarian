@@ -29,6 +29,8 @@ def upload_file():
             os.makedirs(extract_destination)
         if file_ext == '.html':
             shutil.copy2(upload_destination, os.path.join(extract_destination, "index.html"))
+        elif file_ext == '.pdf':
+            shutil.copy2(upload_destination, os.path.join(extract_destination, "content.pdf"))
         else:
             shutil.unpack_archive(upload_destination, extract_destination)
         file_checksum = hashlib.sha256(open(upload_destination, 'rb').read()).hexdigest()

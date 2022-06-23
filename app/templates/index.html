@@ -83,7 +83,7 @@
           <tbody>
             {% for book in books %}
             <tr>
-              <td><a href="/book/{{ book['folder-name'] }}/index.html">{{ book['name'] }}</a></td>
+              <td><a href="/book/{{ book['folder-name'] }}/index.html" target="_blank" rel="noopener noreferrer">{{ book['name'] }}</a></td>
               <td>{{ book['author'] }}</td>
               <td>{{ book['create-date'] }}</td>
               <td>
